@@ -1,0 +1,28 @@
+@startuml
+left to right direction
+actor "Usuario/Organizador" as Organizador
+actor "Invitado" as Invitado
+actor "Admin (opcional)" as Admin
+rectangle "Agenda de Eventos con Invitaciones" {
+  usecase "Registrarse / Iniciar sesión" as UC_Auth
+  usecase "Gestionar perfil" as UC_Perfil
+  usecase "CRUD de eventos" as UC_Eventos
+  usecase "Enviar invitaciones" as UC_Invitar
+  usecase "RSVP (aceptar/declinar)" as UC_RSVP
+  usecase "Ver estado de invitados" as UC_Estado
+  usecase "Buscar/filtrar eventos" as UC_Buscar
+  usecase "Notificaciones" as UC_Notif
+  usecase "Métricas básicas" as UC_Metricas
+}
+Organizador --> UC_Auth
+Organizador --> UC_Perfil
+Organizador --> UC_Eventos
+Organizador --> UC_Invitar
+Organizador --> UC_Estado
+Organizador --> UC_Buscar
+Organizador --> UC_Notif
+Invitado --> UC_RSVP
+Admin --> UC_Metricas
+UC_Invitar --> UC_RSVP : <<incluye>>
+UC_Eventos --> UC_Invitar : <<extiende>>
+@enduml
