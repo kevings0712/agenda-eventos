@@ -1,0 +1,39 @@
+@startuml
+title Clases de dominio (simplificado)
+
+class Usuario {
+  +id: UUID
+  +email: string
+  +password: string
+  +name: string
+  +timezone: string
+  +createdAt: Date
+  +updatedAt: Date
+}
+
+class Evento {
+  +id: UUID
+  +title: string
+  +description: string
+  +startAt: Date
+  +endAt: Date
+  +location: string
+  +ownerId: UUID
+  +createdAt: Date
+  +updatedAt: Date
+}
+
+class Invitacion {
+  +id: UUID
+  +eventId: UUID
+  +email: string
+  +name: string
+  +token: string
+  +status: {PENDING, ACCEPTED, DECLINED}
+  +respondedAt: Date
+  +createdAt: Date
+}
+
+Usuario "1" -- "many" Evento : crea >
+Evento "1" -- "many" Invitacion : tiene >
+@enduml

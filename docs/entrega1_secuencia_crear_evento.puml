@@ -1,0 +1,27 @@
+@startuml
+title Secuencia: Usuario crea evento y envía invitaciones
+
+actor Usuario
+participant "Frontend\n(React)" as FE
+participant "API\nExpress" as API
+participant "EventService" as ES
+participant "InvitationService" as IS
+database "PostgreSQL" as DB
+queue "EmailService/SMTP" as SMTP
+
+Usuario -> FE : Crear evento (título, fechas, invitados[])
+FE -> API : POST /events {datos, invitados[]}
+API -> ES : validar datos y reglas
+ES -> DB : INSERT evento
+DB --> ES : evento creado (id)
+
+loop por cada invitado
+  API -> IS : crear invitación(inv.email, nombre, eventId)
+  IS -> DB : INSERT invitación + token
+  DB --> IS : invitación creada
+  IS -> SMTP : enviar email con link RSVP (token)
+end
+
+API --> FE : 201 Created (evento + invitados)
+FE --> Usuario : Mostrar evento y estado de invitaciones
+@enduml
